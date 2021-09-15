@@ -1,18 +1,15 @@
 package servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import launch.Storage.Storage;
 import launch.model.Task;
+import org.springframework.stereotype.Controller;
 
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import javax.servlet.ServletException;
-
-import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +19,13 @@ import javax.servlet.http.HttpServletResponse;
         name = "MyServlet",
         urlPatterns = {"/todo"}
 )
+
+@Controller
 public class HelloServlet extends HttpServlet {
     private int id = 0;
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<Integer, Task> taskMap = new HashMap<>();
+    private final Storage storage = Storage.getInstance();
 
 
     @Override
