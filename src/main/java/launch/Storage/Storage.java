@@ -32,4 +32,8 @@ public class Storage {
     public static void editTask(Integer id,String text){
         getInstance().taskStorage.get(id).setText(text);
     }
+
+    public static Map<Integer,Task> getAll(){
+        return getInstance().taskStorage;
+    }
 }

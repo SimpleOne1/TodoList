@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="helloServlet" class ="servlet.HelloServlet">
+        <constructor-arg ref="taskService"/>
+    </bean>
+
+    <bean id="taskService" class="launch.services.TaskService">
+        <constructor-arg ref="taskDAO"/>
+    </bean>
+    <bean id="taskDAO" class="launch.persistence.TaskDaoInMemImpl">
+    </bean>
+        </beans>

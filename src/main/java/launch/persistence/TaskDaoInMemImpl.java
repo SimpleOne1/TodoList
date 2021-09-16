@@ -4,7 +4,10 @@ import launch.Storage.Storage;
 import launch.model.Task;
 import org.springframework.stereotype.Repository;
 
-@Repository
+
+import java.util.Map;
+
+
 public class TaskDaoInMemImpl implements TaskDAO {
 
     public TaskDaoInMemImpl() {
@@ -28,5 +31,10 @@ public class TaskDaoInMemImpl implements TaskDAO {
     @Override
     public void edit(Integer id,String text) {
         Storage.editTask(id,text);
+    }
+
+    @Override
+    public Map<Integer, Task> getAll() {
+        return Storage.getAll();
     }
 }
