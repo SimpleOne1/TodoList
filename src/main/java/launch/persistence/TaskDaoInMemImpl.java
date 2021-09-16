@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TaskDaoInMemImpl implements TaskDAO {
 
+    public TaskDaoInMemImpl() {
+    }
+
     @Override
     public Integer save(Task task) {
         return Storage.putTaskInStorage(task);
