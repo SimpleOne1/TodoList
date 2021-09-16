@@ -1,9 +1,11 @@
 package servlet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import launch.Storage.Storage;
 import launch.model.Task;
-import org.springframework.stereotype.Controller;
+import launch.services.TaskService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 import java.io.*;
@@ -22,19 +24,29 @@ import javax.servlet.http.HttpServletResponse;
         urlPatterns = {"/todo"}
 )
 
-@Controller
+
 public class HelloServlet extends HttpServlet {
 
     private int id = 0;
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<Integer, Task> taskMap = new HashMap<>();
-    private final Storage storage = Storage.getInstance();
 
+    private ApplicationContext context = new ClassPathXmlApplicationContext("Application.xml");
+
+    private  TaskService taskService=context.getBean(TaskService.class);
+
+
+
+    public HelloServlet(TaskService taskService) {
+        this.taskService = taskService;
+    }
+    private HelloServlet() {
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        mapper.writeValue(resp.getOutputStream(), taskMap.values());
+        mapper.writeValue(resp.getOutputStream(), taskService.getAll());
     }
 
     @Override
@@ -46,17 +58,17 @@ public class HelloServlet extends HttpServlet {
         if (Objects.isNull(task.getId())) {
             task.setId(++id);
         }
-        taskMap.put(task.getId(), task);
+        taskService.saveTask(task);
         mapper.writeValue(resp.getOutputStream(), task);
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws  IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String id = req.getParameter("id");
         if (id == null) {
-            taskMap.clear();
+            taskService.deleteAll();
         } else {
-            taskMap.remove(Integer.parseInt(id));
+            taskService.deleteTask(Integer.parseInt(id));
         }
     }
 
