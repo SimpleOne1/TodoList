@@ -12,8 +12,6 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.EmptyResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 public class Main  {
@@ -77,5 +75,6 @@ public class Main  {
         ctx.setResources(resources);
         tomcat.start();
         tomcat.getServer().await();
+
     }
 }
