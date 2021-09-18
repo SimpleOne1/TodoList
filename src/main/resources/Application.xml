@@ -5,9 +5,7 @@
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-    <bean id="helloServlet" class ="servlet.TODOServlet">
-        <constructor-arg ref="taskService"/>
-    </bean>
+
 
     <bean id="taskService" class="launch.services.TaskService">
         <constructor-arg ref="taskDAO"/>

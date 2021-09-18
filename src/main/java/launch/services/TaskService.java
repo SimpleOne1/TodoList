@@ -7,9 +7,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class TaskService {
+    private int id =0;
 
     private final TaskDAO taskDAO;
 
@@ -18,6 +20,9 @@ public class TaskService {
     }
 
     public void saveTask(Task task){
+        if(task.getId()==null){
+            task.setId(++id);
+        }
         taskDAO.save(task);
     }
     public void deleteTask(Integer id){
@@ -29,7 +34,7 @@ public class TaskService {
     public void editTask(Integer id,String text){
         taskDAO.edit(id,text);
     }
-    public Map<Integer, Task> getAll(){
+    public Collection<Task> getAll(){
         return taskDAO.getAll();
     }
 

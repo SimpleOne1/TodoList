@@ -5,6 +5,7 @@ import launch.model.Task;
 import launch.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -30,10 +31,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class TODOServlet extends HttpServlet {
 
-    private int id = 0;
     private final ObjectMapper mapper = new ObjectMapper();
     private final Map<Integer, Task> taskMap = new HashMap<>();
     private TaskService taskService;
+    private ConfigurableApplicationContext context;
 
     public TODOServlet(TaskService taskService) {
         this.taskService = taskService;
@@ -50,14 +51,19 @@ public class TODOServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        ApplicationContext context = new ClassPathXmlApplicationContext("Application.xml");
+        context = new ClassPathXmlApplicationContext("Application.xml");
         setTaskService(context.getBean(TaskService.class));
+    }
+
+    @Override
+    public void destroy() {
+        context.close();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        mapper.writeValue(resp.getOutputStream(), taskService.getAll().values());
+        mapper.writeValue(resp.getOutputStream(), taskService.getAll());
     }
 
     @Override
@@ -65,10 +71,6 @@ public class TODOServlet extends HttpServlet {
             throws IOException {
 
         Task task = mapper.readValue(req.getInputStream(), Task.class);
-
-        if (Objects.isNull(task.getId())) {
-            task.setId(++id);
-        }
         taskService.saveTask(task);
         mapper.writeValue(resp.getOutputStream(), task);
     }

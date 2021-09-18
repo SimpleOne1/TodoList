@@ -3,18 +3,19 @@ package launch.persistence;
 import launch.model.Task;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.Map;
 
 public interface TaskDAO {
 
-    public Integer save(Task task);
+    Integer save(Task task);
 
-    public void delete(Integer id);
+    void delete(Integer id);
 
-    public void edit(Integer id,String text);
+    void edit(Integer id, String text);
 
-    public void deleteAll();
+    void deleteAll();
 
-    public Map<Integer,Task> getAll();
+    Collection<Task> getAll();
 
 }
